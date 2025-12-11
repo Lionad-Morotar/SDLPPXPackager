@@ -296,8 +296,31 @@ public class SDLTBConverter {
             termbase.addConcept(entryNumber);
             String xml = row.get("text").toString();
 
+            // Some SDLTB files contain a UTF-8 BOM or other invisible
+            // characters before the XML prolog, which makes the XML
+            // parser fail with "Content is not allowed in prolog".
+            // Strip a potential leading BOM character.
+            if (!xml.isEmpty() && xml.charAt(0) == '\uFEFF') {
+                xml = xml.substring(1);
+            }
+
+            // In some termbases there might be garbage characters before the
+            // first '<'. To be more tolerant, start parsing from the first
+            // XML tag if present.
+            int firstLt = xml.indexOf('<');
+            if (firstLt > 0) {
+                xml = xml.substring(firstLt);
+            }
+
             InputSource source = new InputSource(new StringReader(xml));
-            document = xmldb.parse(source);
+            try {
+                document = xmldb.parse(source);
+            } catch (SAXException e) {
+                // If the XML is still not well-formed, log and skip this row
+                LOGGER.log(Level.WARNING, "Skipping malformed SDLTB entry {0}: {1}",
+                        new Object[] { entryNumber, e.getMessage() });
+                continue;
+            }
 
             // ==================== Read entry level data
             // =======================

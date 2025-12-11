@@ -15,4 +15,13 @@
  include 'services:webservice'
  */
 
+// Ensure Gradle plugins and their transitive dependencies (like grgit-core)
+// can be resolved from both the Gradle Plugin Portal and Maven Central.
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+		mavenCentral()
+	}
+}
+
 rootProject.name = 'SDLPPXPackager'

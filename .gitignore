@@ -31,5 +31,9 @@ nbproject/
 .idea/uiDesigner.xml
 .idea/vcs.xml
 
+.DS_store
+
 test_res
 /nbproject/private/
+
+results

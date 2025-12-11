@@ -2,11 +2,13 @@ plugins {
 	id 'eclipse'
 	id 'application'
 	id 'com.diffplug.spotless' version '6.13.0'
-	id 'nebula.release' version '15.3.1'
 }
 
 applicationName = 'SDLPPXPackager'
 mainClassName = 'net.briac.sdlppx.SDLPPXPackager'
+
+// Set an explicit project version so manifest Implementation-Version is not null
+version = '1.0.0'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
